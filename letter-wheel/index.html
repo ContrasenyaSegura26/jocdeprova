@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Letter Wheel — C1 Modal Verbs &amp; Suffixes Game</title>
+  <meta name="description" content="An A–Z letter wheel game with a scoreboard to review may, might, could, can, be able to and the suffixes -ty, -cy, -ism, -ance, -ence, -ness." />
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- INTRO -->
+  <main id="intro" class="screen intro">
+    <div class="intro-text">
+      <span class="tag">English · Level C1</span>
+      <h1 class="big-title">Letter <span class="accent">Wheel</span></h1>
+      <p class="lead">One clue for every letter of the alphabet. Get round the wheel before the clock runs out.</p>
+      <div class="group">
+        <p class="eyebrow">You'll review</p>
+        <div class="chips">
+          <span class="chip modal">may</span><span class="chip modal">might</span><span class="chip modal">could</span>
+          <span class="chip modal">can</span><span class="chip modal">be able to</span><span class="chip modal">be unable to</span>
+          <span class="chip">-ty</span><span class="chip">-cy</span><span class="chip">-ism</span>
+          <span class="chip">-ance</span><span class="chip">-ence</span><span class="chip">-ness</span>
+        </div>
+      </div>
+      <ul class="rules">
+        <li><b class="t-success">Correct</b> answers score 1 point.</li>
+        <li><b class="t-wrong">Wrong</b> answers show the right word.</li>
+        <li><b class="t-primary">Pass</b> to come back to a letter later.</li>
+      </ul>
+      <div class="group">
+        <p class="eyebrow">Time</p>
+        <div class="durations" id="durations">
+          <button class="btn choice" data-seconds="180" aria-pressed="false">3 min</button>
+          <button class="btn choice" data-seconds="300" aria-pressed="true">5 min</button>
+          <button class="btn choice" data-seconds="480" aria-pressed="false">8 min</button>
+        </div>
+      </div>
+      <button class="btn game xl" id="start-btn">▶ Start game</button>
+    </div>
+    <div class="wheel" id="intro-wheel">
+      <div class="hub"><button class="play-hub" id="play-hub">Play!</button></div>
+    </div>
+  </main>
+
+  <!-- GAME -->
+  <main id="game" class="screen game-screen" hidden>
+    <header class="game-header">
+      <div>
+        <h1 class="small-title">Letter <span class="accent">Wheel</span></h1>
+        <p class="muted small">C1 · Modal verbs &amp; noun suffixes</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn subtle sm" id="pause-btn">❚❚ Pause</button>
+        <button class="btn subtle sm" id="finish-btn">⚑ Finish</button>
+      </div>
+    </header>
+
+    <div class="scoreboard">
+      <div class="score-box"><span class="score-label">✓ Correct</span><span class="score-value t-success" id="s-correct">0</span></div>
+      <div class="score-box"><span class="score-label">✗ Wrong</span><span class="score-value t-wrong" id="s-wrong">0</span></div>
+      <div class="score-box"><span class="score-label">○ Left</span><span class="score-value" id="s-left">26</span></div>
+      <div class="score-box"><span class="score-label">◷ Time</span><span class="score-value t-primary" id="s-time">5:00</span></div>
+    </div>
+
+    <div class="play-grid">
+      <div class="wheel game-wheel" id="game-wheel">
+        <div class="hub">
+          <div class="hub-inner">
+            <span class="hub-rule" id="hub-rule">Starts with</span>
+            <span class="hub-letter pop" id="hub-letter">A</span>
+            <span class="hub-time" id="hub-time">5:00</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div id="clue-area" class="pop">
+          <div class="badges">
+            <span class="badge-rule" id="badge-rule">Starts with A</span>
+            <span class="badge-topic" id="badge-topic">Modal verb</span>
+          </div>
+          <p class="clue" id="clue"></p>
+          <form id="answer-form" autocomplete="off">
+            <label for="answer" class="sr-only">Your answer</label>
+            <input id="answer" type="text" placeholder="Type your answer…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <div class="actions">
+              <button type="submit" class="btn game xl" id="answer-btn" disabled>✓ Answer</button>
+              <button type="button" class="btn pass xl" id="pass-btn">Pass</button>
+            </div>
+          </form>
+        </div>
+        <div id="paused-area" class="paused" hidden>
+          <p class="paused-title">Paused</p>
+          <p class="muted">The clue is hidden while the clock is stopped.</p>
+          <button class="btn game xl" id="resume-btn">▶ Resume</button>
+        </div>
+        <p id="feedback" class="feedback" role="status" hidden></p>
+      </section>
+    </div>
+  </main>
+
+  <!-- RESULTS -->
+  <main id="results" class="screen results" hidden>
+    <div class="results-head">
+      <p class="eyebrow" id="r-eyebrow">Game over</p>
+      <h1 class="final-score pop"><span class="accent" id="r-score">0</span><span class="muted"> / 26</span></h1>
+      <p class="r-message" id="r-message"></p>
+      <div class="r-stats">
+        <span class="t-success" id="r-correct"></span>
+        <span class="t-wrong" id="r-wrong"></span>
+        <span class="muted" id="r-left"></span>
+      </div>
+      <button class="btn game xl" id="again-btn">↻ Play again</button>
+    </div>
+    <section>
+      <h2 class="review-title">Review</h2>
+      <ol class="review" id="review"></ol>
+    </section>
+  </main>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
